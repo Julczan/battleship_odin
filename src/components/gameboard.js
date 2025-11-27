@@ -11,12 +11,68 @@ class Gameboard {
       }
     }
   }
+
   place(x, y, direction, type) {
-    const ship = new Ship(type);
-    this.board[x][y].push(ship);
-    for (let i = ship.size() - 1; i > 0; i--) {
-      this.board[x][y + i].push(ship);
+    if (x < 0 || x > 9 || y < 0 || y > 9) {
+      return "illegal position";
     }
+    const ship = new Ship(type);
+
+    if (direction === "hor") {
+      const endPoint = y + ship.size() - 1;
+      const isLegal = this.checkPositionHor(x, y, endPoint);
+
+      if (isLegal) {
+        this.pushHorizontal(x, y, endPoint, ship);
+      }
+    }
+
+    if (direction === "ver") {
+      const endPoint = x + ship.size() - 1;
+      const isLegal = this.checkPositionVer(x, y, endPoint);
+
+      if (isLegal) {
+        this.pushVertical(x, y, endPoint, ship);
+      }
+    }
+  }
+
+  pushHorizontal(x, y, endPoint, ship) {
+    for (let i = endPoint; i >= y; i--) {
+      this.board[x][i].push(ship);
+    }
+  }
+
+  pushVertical(x, y, endPoint, ship) {
+    for (let i = endPoint; i >= x; i--) {
+      this.board[i][y].push(ship);
+    }
+  }
+
+  checkPositionHor(x, y, endPoint) {
+    if (endPoint > 9) {
+      return false;
+    }
+
+    for (let i = endPoint; i >= y; i--) {
+      if (this.board[x][i].length) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  checkPositionVer(x, y, endPoint) {
+    if (endPoint > 9) {
+      return false;
+    }
+
+    for (let i = endPoint; i >= x; i--) {
+      if (this.board[i][y].length) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 
