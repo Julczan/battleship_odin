@@ -24,6 +24,8 @@ class Gameboard {
 
       if (isLegal) {
         this.pushHorizontal(x, y, endPoint, ship);
+      } else {
+        return "illegal position";
       }
     }
 
@@ -33,6 +35,8 @@ class Gameboard {
 
       if (isLegal) {
         this.pushVertical(x, y, endPoint, ship);
+      } else {
+        return "illegal position";
       }
     }
   }

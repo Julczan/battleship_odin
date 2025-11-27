@@ -15,27 +15,22 @@ test("horizontal placement", () => {
 });
 
 test("vertical placement", () => {
-  gameboard.place(1, 9, "ver", "carrier");
-  expect(gameboard.board[1][9]).toEqual([carrier]);
-  expect(gameboard.board[5][9]).toEqual([carrier]);
-  expect(gameboard.board[6][9]).toEqual([]);
+  gameboard.place(1, 5, "ver", "carrier");
+  expect(gameboard.board[1][5]).toEqual([carrier]);
+  expect(gameboard.board[5][5]).toEqual([carrier]);
+  expect(gameboard.board[6][5]).toEqual([]);
 });
 
-// test("prevent illegal placement", () => {
-//   expect(gameboard.place(0, 10, "hor", "submarine")).toBe("illegal position");
-//   expect(gameboard.place(-1, 2, "hor", "submarine")).toBe("illegal position");
+test("prevent illegal placement", () => {
+  expect(gameboard.place(0, 10, "hor", "submarine")).toBe("illegal position");
+  expect(gameboard.place(-1, 2, "hor", "submarine")).toBe("illegal position");
 
-//   expect(gameboard.place(7, 7, "hor", "carrier")).toBe("illegal position");
-//   expect(gameboard.place(8, 9, "hor", "patrol-boat")).toBe("illegal position");
-// });
+  expect(gameboard.place(7, 7, "hor", "carrier")).toBe("illegal position");
+  expect(gameboard.place(6, 1, "ver", "carrier")).toBe("illegal position");
+});
 
-// test("prevent placement on taken position", () => {
-//   gameboard.place(0, 1, "hor", "submarine");
-//   expect(gameboard.place(0, 1, "hor", "battleship")).toBe("illegal position");
+test("prevent placement on taken position", () => {
+  expect(gameboard.place(0, 1, "hor", "battleship")).toBe("illegal position");
 
-//   gameboard.place(3, 1, "hor", "carrier");
-//   expect(gameboard.place(3, 4, "hor", "battleship")).toBe("illegal position");
-
-//   gameboard.place(5, 5, "hor", "patrol-boat");
-//   expect(gameboard.place(5, 4, "hor", "carrier")).toBe("illegal position");
-// });
+  expect(gameboard.place(3, 3, "hor", "battleship")).toBe("illegal position");
+});
