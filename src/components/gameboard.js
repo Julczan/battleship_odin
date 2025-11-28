@@ -78,6 +78,27 @@ class Gameboard {
     }
     return true;
   }
+
+  receiveAttack(x, y) {
+    if (x < 0 || x > 9 || y < 0 || y > 9) {
+      return "illegal attack";
+    }
+    if (!this.board[x][y].length) {
+      this.board[x][y].push("missed");
+      return "attack missed";
+    }
+
+    if (
+      this.board[x][y].includes("hit") ||
+      this.board[x][y].includes("missed")
+    ) {
+      return "already attacked";
+    }
+
+    this.board[x][y].push("hit");
+    this.board[x][y][0].hit();
+    return "ship hit";
+  }
 }
 
 export default Gameboard;
