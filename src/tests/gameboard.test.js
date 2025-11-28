@@ -3,7 +3,6 @@ import Gameboard from "../components/gameboard";
 
 const gameboard = new Gameboard();
 const ship = new Ship("submarine");
-const battleship = new Ship("battleship");
 const patrol = new Ship("patrol-boat");
 const carrier = new Ship("carrier");
 
@@ -49,10 +48,38 @@ test("receive attack", () => {
   expect(gameboard.board[1][5]).toEqual([{ length: 5, strike: 1 }, "hit"]);
 
   expect(gameboard.receiveAttack(5, 5)).toBe("ship hit");
-  expect(gameboard.board[1][5]).toEqual([{ length: 5, strike: 2 }, "hit"]);
   expect(gameboard.board[5][5]).toEqual([{ length: 5, strike: 2 }, "hit"]);
+
+  expect(gameboard.receiveAttack(9, 1)).toBe("ship hit");
+  expect(gameboard.board[9][1]).toEqual([{ length: 2, strike: 1 }, "hit"]);
+  expect(gameboard.board[8][1]).toEqual([{ length: 2, strike: 1 }]);
 });
 
 test("prevent attacking the same position two times", () => {
   expect(gameboard.receiveAttack(0, 0)).toBe("already attacked");
+
+  expect(gameboard.receiveAttack(1, 5)).toBe("already attacked");
+});
+
+test("sinking a ship", () => {
+  gameboard.receiveAttack(8, 1);
+  expect(gameboard.sunkCount).toBe(1);
+});
+
+test("sinking every ship", () => {
+  gameboard.receiveAttack(8, 1);
+  expect(gameboard.sunkCount).toBe(1);
+
+  gameboard.receiveAttack(0, 1);
+  gameboard.receiveAttack(0, 2);
+  gameboard.receiveAttack(0, 3);
+  expect(gameboard.sunkCount).toBe(2);
+
+  expect(gameboard.gameOver()).toBe("game is still running");
+
+  gameboard.receiveAttack(2, 5);
+  gameboard.receiveAttack(3, 5);
+  gameboard.receiveAttack(4, 5);
+  expect(gameboard.sunkCount).toBe(3);
+  expect(gameboard.gameOver()).toBe("game over");
 });

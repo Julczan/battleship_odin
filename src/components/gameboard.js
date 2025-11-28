@@ -2,6 +2,8 @@ import Ship from "./ship";
 
 class Gameboard {
   constructor() {
+    this.sunkCount = 0;
+    this.shipCount = 0;
     this.board = [];
 
     for (let i = 0; i < 10; i++) {
@@ -24,6 +26,7 @@ class Gameboard {
 
       if (isLegal) {
         this.pushHorizontal(x, y, endPoint, ship);
+        this.shipCount++;
       } else {
         return "illegal position";
       }
@@ -35,6 +38,7 @@ class Gameboard {
 
       if (isLegal) {
         this.pushVertical(x, y, endPoint, ship);
+        this.shipCount++;
       } else {
         return "illegal position";
       }
@@ -97,7 +101,20 @@ class Gameboard {
 
     this.board[x][y].push("hit");
     this.board[x][y][0].hit();
+
+    if (this.board[x][y][0].isSunk()) {
+      this.sunkCount++;
+    }
+
     return "ship hit";
+  }
+
+  gameOver() {
+    if (this.shipCount === this.sunkCount) {
+      return "game over";
+    } else {
+      return "game is still running";
+    }
   }
 }
 
