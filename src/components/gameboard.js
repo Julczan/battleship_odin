@@ -9,7 +9,7 @@ class Gameboard {
     for (let i = 0; i < 10; i++) {
       this.board.push([]);
       for (let j = 0; j < 10; j++) {
-        this.board[i].push([]);
+        this.board[i].push([{ hasShip: false }]);
       }
     }
   }
@@ -47,12 +47,14 @@ class Gameboard {
 
   pushHorizontal(x, y, endPoint, ship) {
     for (let i = endPoint; i >= y; i--) {
+      this.board[x][i][0].hasShip = true;
       this.board[x][i].push(ship);
     }
   }
 
   pushVertical(x, y, endPoint, ship) {
     for (let i = endPoint; i >= x; i--) {
+      this.board[i][y][0].hasShip = true;
       this.board[i][y].push(ship);
     }
   }
@@ -63,7 +65,7 @@ class Gameboard {
     }
 
     for (let i = endPoint; i >= y; i--) {
-      if (this.board[x][i].length) {
+      if (this.board[x][i][0].hasShip) {
         return false;
       }
     }
@@ -76,7 +78,7 @@ class Gameboard {
     }
 
     for (let i = endPoint; i >= x; i--) {
-      if (this.board[i][y].length) {
+      if (this.board[i][y].hasShip) {
         return false;
       }
     }
@@ -87,10 +89,6 @@ class Gameboard {
     if (x < 0 || x > 9 || y < 0 || y > 9) {
       return "illegal attack";
     }
-    if (!this.board[x][y].length) {
-      this.board[x][y].push("missed");
-      return "attack missed";
-    }
 
     if (
       this.board[x][y].includes("hit") ||
@@ -99,10 +97,15 @@ class Gameboard {
       return "already attacked";
     }
 
-    this.board[x][y].push("hit");
-    this.board[x][y][0].hit();
+    if (!this.board[x][y][0].hasShip) {
+      this.board[x][y].push("missed");
+      return "attack missed";
+    }
 
-    if (this.board[x][y][0].isSunk()) {
+    this.board[x][y].push("hit");
+    this.board[x][y][1].hit();
+
+    if (this.board[x][y][1].isSunk()) {
       this.sunkCount++;
     }
 
@@ -115,6 +118,20 @@ class Gameboard {
     } else {
       return "game is still running";
     }
+  }
+
+  getShipsCoords() {
+    const coords = [];
+
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (this.board[i][j][0].hasShip) {
+          coords.push([i, j]);
+        }
+      }
+    }
+
+    return coords;
   }
 }
 

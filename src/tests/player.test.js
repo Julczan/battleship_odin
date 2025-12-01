@@ -1,6 +1,5 @@
 import Player from "../components/player";
 import Gameboard from "../components/gameboard";
-import Ship from "../components/ship";
 
 const player = new Player("player");
 const computer = new Player("computer");

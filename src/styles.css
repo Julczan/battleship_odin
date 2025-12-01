@@ -21,3 +21,8 @@ body {
 .cell {
   border: 1px solid black;
 }
+
+.hasShip {
+  background-color: blue;
+  border: 1px solid white;
+}
