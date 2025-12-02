@@ -14,6 +14,11 @@ function addCells(board) {
     }
     cell.dataset.row = rowNum;
     cell.dataset.column = columnNum;
+    if (board === playerBoard) {
+      cell.dataset.name = "player";
+    } else {
+      cell.dataset.name = "computer";
+    }
   }
 }
 
@@ -22,4 +27,11 @@ function displayGameboard() {
   addCells(computerBoard);
 }
 
-export { displayGameboard };
+function markAsShip([x, y], player) {
+  const cell = document.querySelector(
+    `[data-row="${x}"][data-column="${y}"][data-name=${player}]`
+  );
+  cell.className = "hasShip";
+}
+
+export { displayGameboard, markAsShip };
