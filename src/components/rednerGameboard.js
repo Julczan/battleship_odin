@@ -1,5 +1,12 @@
+import newGame from "./gameDrive";
+
+const game = newGame();
+
 const playerBoard = document.querySelector(".board-player");
 const computerBoard = document.querySelector(".board-computer");
+
+const playerCoords = game.player.board.getShipsCoords();
+const computerCoords = game.computer.board.getShipsCoords();
 
 function addCells(board) {
   for (let i = 0; i < 100; i++) {
@@ -33,5 +40,23 @@ function markAsShip([x, y], player) {
   );
   cell.className = "hasShip";
 }
+
+function markAsHit([x, y], player) {
+  const cell = document.querySelector(
+    `[data-row="${x}"][data-column="${y}"][data-name=${player}]`
+  );
+  cell.className = "hit";
+}
+
+displayGameboard();
+
+function rednerGameboard(playerCoords, player) {
+  playerCoords.forEach((coord) => {
+    markAsShip(coord, player);
+  });
+}
+
+rednerGameboard(playerCoords, "player");
+rednerGameboard(computerCoords, "computer");
 
 export { displayGameboard, markAsShip };

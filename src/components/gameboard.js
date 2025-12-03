@@ -133,6 +133,23 @@ class Gameboard {
 
     return coords;
   }
+
+  getHitCoords() {
+    const coords = [];
+
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (this.board[i][j][0].hasShip) {
+          if (this.board[i][j][2] === "hit") {
+            coords.push([i, j]);
+          }
+        }
+      }
+    }
+    return coords;
+  }
+
+  getSunkCoords() {}
 }
 
 export default Gameboard;

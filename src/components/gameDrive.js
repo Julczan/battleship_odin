@@ -18,4 +18,8 @@ function newGame() {
   return { player, computer };
 }
 
+//Start the game by creating two players
+//Let the player place their ships
+//Let the player attack enemy ships
+
 export default newGame;

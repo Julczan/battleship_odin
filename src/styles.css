@@ -26,3 +26,18 @@ body {
   background-color: blue;
   border: 1px solid white;
 }
+
+.hit {
+  background-color: red;
+  border: 1px solid white;
+}
+
+.missed {
+  background-color: grey;
+  border: 1px solid white;
+}
+
+.sunk {
+  background-color: black;
+  border: 1px solid white;
+}
