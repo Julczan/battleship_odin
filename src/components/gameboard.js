@@ -149,6 +149,19 @@ class Gameboard {
     return coords;
   }
 
+  getMissedCoords() {
+    const coords = [];
+
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (this.board[i][j][1] === "missed") {
+          coords.push([i, j]);
+        }
+      }
+    }
+    return coords;
+  }
+
   getSunkCoords() {}
 }
 
