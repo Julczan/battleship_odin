@@ -5,9 +5,6 @@ const game = newGame();
 const playerBoard = document.querySelector(".board-player");
 const computerBoard = document.querySelector(".board-computer");
 
-const playerCoords = game.player.board.getShipsCoords();
-const computerCoords = game.computer.board.getShipsCoords();
-
 function addCells(board) {
   for (let i = 0; i < 100; i++) {
     const cell = document.createElement("div");
@@ -41,6 +38,13 @@ function markAsShip([x, y], player) {
   cell.className = "hasShip";
 }
 
+function markAsMissed([x, y], player) {
+  const cell = document.querySelector(
+    `[data-row="${x}"][data-column="${y}"][data-name=${player}]`
+  );
+  cell.className = "missed";
+}
+
 function markAsHit([x, y], player) {
   const cell = document.querySelector(
     `[data-row="${x}"][data-column="${y}"][data-name=${player}]`
@@ -48,15 +52,43 @@ function markAsHit([x, y], player) {
   cell.className = "hit";
 }
 
+function markAsSunk([x, y], player) {
+  const cell = document.querySelector(
+    `[data-row="${x}"][data-column="${y}"][data-name=${player}]`
+  );
+  cell.className = "sunk";
+}
+
 displayGameboard();
 
-function rednerGameboard(playerCoords, player) {
+function rednerGameboard(missedAttacks, hitAttacks, sunkShips, player) {
+  // playerCoords.forEach((coord) => {
+  //   markAsShip(coord, player);
+  // });
+
+  if (missedAttacks) {
+    missedAttacks.forEach((coord) => {
+      markAsMissed(coord, player);
+    });
+  }
+
+  if (hitAttacks) {
+    hitAttacks.forEach((coord) => {
+      markAsHit(coord, player);
+    });
+  }
+
+  if (sunkShips) {
+    sunkShips.forEach((coord) => {
+      markAsSunk(coord, player);
+    });
+  }
+}
+
+function renderShips(playerCoords, player) {
   playerCoords.forEach((coord) => {
     markAsShip(coord, player);
   });
 }
 
-rednerGameboard(playerCoords, "player");
-rednerGameboard(computerCoords, "computer");
-
-export { displayGameboard, markAsShip };
+export { displayGameboard, rednerGameboard, renderShips };
