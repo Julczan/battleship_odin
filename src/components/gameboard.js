@@ -162,7 +162,20 @@ class Gameboard {
     return coords;
   }
 
-  getSunkCoords() {}
+  getSunkCoords() {
+    const coords = [];
+
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (this.board[i][j][0].hasShip) {
+          if (this.board[i][j][1].isSunk()) {
+            coords.push([i, j]);
+          }
+        }
+      }
+    }
+    return coords;
+  }
 }
 
 export default Gameboard;

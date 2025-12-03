@@ -132,3 +132,18 @@ test("get missed coords", () => {
     [6, 7],
   ]);
 });
+
+test("get sunk ships coords", () => {
+  expect(gameboard.getSunkCoords()).toEqual([
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    [1, 5],
+    [2, 5],
+    [3, 5],
+    [4, 5],
+    [5, 5],
+    [8, 1],
+    [9, 1],
+  ]);
+});
