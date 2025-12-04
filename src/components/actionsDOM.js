@@ -4,6 +4,7 @@ import {
   displayGameboard,
 } from "./rednerGameboard";
 import { newGame, gameCourse } from "./gameDrive";
+import getRandomCoords from "./computer";
 
 const game = newGame();
 const turn = game.currTurn;
@@ -19,7 +20,19 @@ displayGameboard();
 renderShips(playerShipsCoords, "player");
 renderShips(computerShipsCoords, "computer");
 
-function sendCoords() {
+function attackPlayer() {
+  const coords = getRandomCoords();
+  const message = game.player.board.receiveAttack(coords[0], coords[1]);
+  const missedAttacks = game.player.board.getMissedCoords();
+  const hitAttacks = game.player.board.getHitCoords();
+  const sunkShips = game.player.board.getSunkCoords();
+
+  rednerGameboard(missedAttacks, hitAttacks, sunkShips, "player");
+}
+
+attackPlayer();
+
+function attackComputer() {
   const message = game.computer.board.receiveAttack(
     this.dataset.row,
     this.dataset.column
@@ -34,7 +47,7 @@ function sendCoords() {
 }
 
 for (const cell of computerCells) {
-  cell.addEventListener("click", sendCoords);
+  cell.addEventListener("click", attackComputer);
 }
 
 // if (turn === "player") {
@@ -43,4 +56,4 @@ for (const cell of computerCells) {
 // if (turn === "computer") {
 // }
 
-export { sendCoords };
+export { attackComputer };
