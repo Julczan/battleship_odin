@@ -1,7 +1,18 @@
-import Ship from "./ship";
 import Player from "./player";
-import Gameboard from "./gameboard";
-import { markAsShip, displayGameboard } from "./rednerGameboard";
+
+class Turns {
+  constructor(player) {
+    this.turn = player;
+  }
+
+  getCurrTurn() {
+    return this.turn;
+  }
+
+  changeTurn(newPlayer) {
+    this.turn = newPlayer;
+  }
+}
 
 function newGame() {
   const player = new Player("player");
@@ -15,11 +26,23 @@ function newGame() {
   computer.board.place(6, 1, "hor", "carrier");
   computer.board.place(8, 1, "hor", "battleship");
 
-  return { player, computer };
+  const currTurn = new Turns("player");
+
+  return { player, computer, currTurn };
 }
 
-//Start the game by creating two players
-//Let the player place their ships
-//Let the player attack enemy ships
+function gameCourse(message, turn) {
+  if (message === "attack missed") {
+    turn.changeTurn("computer");
+  }
+  //let The player attack
+  //wait for the player to click on board
+  //if hit - attack again
+  //if miss - let the computer attack
+  //don't let the player click
+  //if computer hit - attack again
+  //if computer miss - let the player attack
+  //if gameover() - display the winner
+}
 
-export default newGame;
+export { newGame, gameCourse };

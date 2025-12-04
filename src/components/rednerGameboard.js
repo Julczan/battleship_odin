@@ -1,7 +1,3 @@
-import newGame from "./gameDrive";
-
-const game = newGame();
-
 const playerBoard = document.querySelector(".board-player");
 const computerBoard = document.querySelector(".board-computer");
 
@@ -59,13 +55,7 @@ function markAsSunk([x, y], player) {
   cell.className = "sunk";
 }
 
-displayGameboard();
-
 function rednerGameboard(missedAttacks, hitAttacks, sunkShips, player) {
-  // playerCoords.forEach((coord) => {
-  //   markAsShip(coord, player);
-  // });
-
   if (missedAttacks) {
     missedAttacks.forEach((coord) => {
       markAsMissed(coord, player);
