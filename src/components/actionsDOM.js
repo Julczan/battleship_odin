@@ -6,13 +6,14 @@ import {
 import { newGame, gameCourse } from "./gameDrive";
 import getRandomCoords from "./computer";
 
-const game = newGame();
-const turn = game.currTurn;
-
+const messageDiv = document.querySelector(".message");
 const playerBoard = document.querySelector(".board-player");
 const computerBoard = document.querySelector(".board-computer");
+
+const game = newGame();
 const playerShipsCoords = game.player.board.getShipsCoords();
 const computerShipsCoords = game.computer.board.getShipsCoords();
+const turn = game.currTurn;
 
 const computerCells = computerBoard.childNodes;
 
@@ -26,11 +27,22 @@ function attackPlayer() {
   const missedAttacks = game.player.board.getMissedCoords();
   const hitAttacks = game.player.board.getHitCoords();
   const sunkShips = game.player.board.getSunkCoords();
+  const gameover = game.player.board.gameOver();
+
+  if (gameover) {
+    const winner = gameCourse("gameover", "computer");
+    messageDiv.textContent = winner;
+    stopGame();
+  }
 
   rednerGameboard(missedAttacks, hitAttacks, sunkShips, "player");
-}
 
-attackPlayer();
+  if (message === "already attacked" || message === "ship hit") {
+    attackPlayer();
+  }
+
+  gameCourse(message, "computer", turn);
+}
 
 function attackComputer() {
   const message = game.computer.board.receiveAttack(
@@ -40,20 +52,31 @@ function attackComputer() {
   const missedAttacks = game.computer.board.getMissedCoords();
   const hitAttacks = game.computer.board.getHitCoords();
   const sunkShips = game.computer.board.getSunkCoords();
+  const gameover = game.computer.board.gameOver();
 
   rednerGameboard(missedAttacks, hitAttacks, sunkShips, "computer");
 
-  gameCourse(message, turn);
+  if (gameover) {
+    const winner = gameCourse("gameover", "player");
+    messageDiv.textContent = winner;
+    stopGame();
+  }
+
+  gameCourse(message, "player", turn);
+
+  if (turn.getCurrTurn() === "computer") {
+    attackPlayer();
+  }
 }
 
 for (const cell of computerCells) {
   cell.addEventListener("click", attackComputer);
 }
 
-// if (turn === "player") {
-//   letPlayerClick();
-// }
-// if (turn === "computer") {
-// }
+function stopGame() {
+  for (const cell of computerCells) {
+    cell.removeEventListener("click", attackComputer);
+  }
+}
 
-export { attackComputer };
+export { attackComputer, attackPlayer };

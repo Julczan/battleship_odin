@@ -114,9 +114,9 @@ class Gameboard {
 
   gameOver() {
     if (this.shipCount === this.sunkCount) {
-      return "game over";
+      return true;
     } else {
-      return "game is still running";
+      return false;
     }
   }
 

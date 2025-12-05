@@ -83,13 +83,13 @@ test("sinking every ship", () => {
   gameboard.receiveAttack(0, 3);
   expect(gameboard.sunkCount).toBe(2);
 
-  expect(gameboard.gameOver()).toBe("game is still running");
+  expect(gameboard.gameOver()).toBe(false);
 
   gameboard.receiveAttack(2, 5);
   gameboard.receiveAttack(3, 5);
   gameboard.receiveAttack(4, 5);
   expect(gameboard.sunkCount).toBe(3);
-  expect(gameboard.gameOver()).toBe("game over");
+  expect(gameboard.gameOver()).toBe(true);
 });
 
 test("get positions of all player ships", () => {

@@ -1,5 +1,4 @@
 import Player from "./player";
-
 class Turns {
   constructor(player) {
     this.turn = player;
@@ -31,18 +30,28 @@ function newGame() {
   return { player, computer, currTurn };
 }
 
-function gameCourse(message, turn) {
-  if (message === "attack missed") {
+function gameCourse(message, player, turn) {
+  if (message === "gameover") {
+    if (player === "player") {
+      return displayWinner("Player");
+    }
+    if (player === "computer") {
+      return displayWinner("Computer");
+    }
+  }
+
+  if (message === "attack missed" && player === "player") {
     turn.changeTurn("computer");
   }
-  //let The player attack
-  //wait for the player to click on board
-  //if hit - attack again
-  //if miss - let the computer attack
-  //don't let the player click
-  //if computer hit - attack again
-  //if computer miss - let the player attack
-  //if gameover() - display the winner
+  if (message === "attack missed" && player === "computer") {
+    turn.changeTurn("player");
+  }
+}
+
+function displayWinner(player) {
+  const message = `Game over! ${player} won!`;
+
+  return message;
 }
 
 export { newGame, gameCourse };
