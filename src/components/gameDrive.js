@@ -1,4 +1,5 @@
 import Player from "./player";
+
 class Turns {
   constructor(player) {
     this.turn = player;
@@ -13,21 +14,14 @@ class Turns {
   }
 }
 
-function newGame() {
-  const player = new Player("player");
-  const computer = new Player("computer");
-
-  player.board.place(0, 1, "ver", "submarine");
-  player.board.place(8, 1, "hor", "carrier");
-  player.board.place(9, 3, "hor", "battleship");
-
-  computer.board.place(1, 5, "ver", "submarine");
-  computer.board.place(6, 1, "hor", "carrier");
-  computer.board.place(8, 1, "hor", "battleship");
-
-  const currTurn = new Turns("player");
-
-  return { player, computer, currTurn };
+function placeShips() {
+  //Create game phases - first one - placing ships
+  //create a separate screen that lets user place ships
+  //user has to place one ship of each type
+  //add rotate button to place horizontally or vertically
+  //if all ships are on the board Start Game button appears
+  //change the screen to contain two boards when the button is clicked
+  //the game begins
 }
 
 function gameCourse(message, player, turn) {
@@ -54,4 +48,4 @@ function displayWinner(player) {
   return message;
 }
 
-export { newGame, gameCourse };
+export { gameCourse };

@@ -1,4 +1,4 @@
-import Ship from "../components/ship";
+import { Ship } from "../components/ship";
 
 const ship = new Ship("patrol-boat");
 const largeShip = new Ship("carrier");

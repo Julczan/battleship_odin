@@ -21,7 +21,7 @@ class Ship {
         this.length = 4;
         break;
       case "destroyer":
-        this.length = 4;
+        this.length = 3;
         break;
       case "submarine":
         this.length = 3;
@@ -41,4 +41,34 @@ class Ship {
   }
 }
 
-export default Ship;
+class ShipTypes {
+  constructor() {
+    this.type = "carrier";
+  }
+
+  getType() {
+    return this.type;
+  }
+
+  nextType() {
+    switch (this.type) {
+      case "carrier":
+        this.type = "battleship";
+        break;
+      case "battleship":
+        this.type = "destroyer";
+        break;
+      case "destroyer":
+        this.type = "submarine";
+        break;
+      case "submarine":
+        this.type = "patrol-boat";
+        break;
+      case "patrol-boat":
+        this.type = "none";
+        break;
+    }
+  }
+}
+
+export { Ship, ShipTypes };

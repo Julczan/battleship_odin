@@ -1,25 +1,68 @@
 import {
   rednerGameboard,
   renderShips,
-  displayGameboard,
+  addCells,
+  placeShipsBoard,
 } from "./rednerGameboard";
-import { newGame, gameCourse } from "./gameDrive";
+import Player from "./player";
+
+import { gameCourse } from "./gameDrive";
 import getRandomCoords from "./computer";
+import { ShipTypes } from "./ship";
 
 const messageDiv = document.querySelector(".message");
-const playerBoard = document.querySelector(".board-player");
-const computerBoard = document.querySelector(".board-computer");
 
-const game = newGame();
-const playerShipsCoords = game.player.board.getShipsCoords();
-const computerShipsCoords = game.computer.board.getShipsCoords();
-const turn = game.currTurn;
+const display = document.querySelector(".display");
+
+const playerBoard = document.createElement("div");
+playerBoard.className = "board-player";
+
+const computerBoard = document.createElement("div");
+computerBoard.className = "board-computer";
+
+const player = new Player("player");
+const computer = new Player("computer");
+const shipTypes = new ShipTypes();
+
+function startGame() {
+  addCells(playerBoard, "playerBoard");
+  display.appendChild(playerBoard);
+
+  const playerCells = playerBoard.childNodes;
+
+  for (const cell of playerCells) {
+    cell.addEventListener("click", function (e) {
+      placeShip(e.currentTarget, "ver", shipTypes.getType());
+    });
+  }
+}
+
+// const playerShipsCoords = game.player.board.getShipsCoords();
+// const computerShipsCoords = game.computer.board.getShipsCoords();
+// const turn = game.currTurn;
 
 const computerCells = computerBoard.childNodes;
 
-displayGameboard();
-renderShips(playerShipsCoords, "player");
-renderShips(computerShipsCoords, "computer");
+// renderShips(playerShipsCoords, "player");
+// renderShips(computerShipsCoords, "computer");
+
+function placeShip(target, direction, name) {
+  const message = player.board.place(
+    +target.dataset.row,
+    +target.dataset.column,
+    direction,
+    name
+  );
+  console.log(message);
+  if (message === "illegal position") {
+    return;
+  }
+
+  const playerShipsCoords = player.board.getShipsCoords();
+
+  renderShips(playerShipsCoords, "player");
+  shipTypes.nextType();
+}
 
 function attackPlayer() {
   const coords = getRandomCoords();
@@ -78,5 +121,7 @@ function stopGame() {
     cell.removeEventListener("click", attackComputer);
   }
 }
+
+startGame();
 
 export { attackComputer, attackPlayer };

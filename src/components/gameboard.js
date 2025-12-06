@@ -1,4 +1,4 @@
-import Ship from "./ship";
+import { Ship } from "./ship";
 
 class Gameboard {
   constructor() {
@@ -78,7 +78,7 @@ class Gameboard {
     }
 
     for (let i = endPoint; i >= x; i--) {
-      if (this.board[i][y].hasShip) {
+      if (this.board[i][y][0].hasShip) {
         return false;
       }
     }

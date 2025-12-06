@@ -23,7 +23,8 @@ body {
 }
 
 .board-player,
-.board-computer {
+.board-computer,
+.board-starting {
   border: 2px solid black;
   height: 500px;
   width: 500px;

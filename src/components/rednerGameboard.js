@@ -1,7 +1,12 @@
-const playerBoard = document.querySelector(".board-player");
-const computerBoard = document.querySelector(".board-computer");
+// const display = document.querySelector(".display");
 
-function addCells(board) {
+// const playerBoard = document.createElement("div");
+// playerBoard.className = "board-player";
+
+// const computerBoard = document.createElement("div");
+// computerBoard.className = "board-computer";
+
+function addCells(board, type) {
   for (let i = 0; i < 100; i++) {
     const cell = document.createElement("div");
     cell.className = "cell";
@@ -14,18 +19,26 @@ function addCells(board) {
     }
     cell.dataset.row = rowNum;
     cell.dataset.column = columnNum;
-    if (board === playerBoard) {
+    if (type === "playerBoard") {
       cell.dataset.name = "player";
-    } else {
+    }
+    if (type === "computerBoard") {
       cell.dataset.name = "computer";
     }
   }
 }
 
-function displayGameboard() {
-  addCells(playerBoard);
-  addCells(computerBoard);
-}
+// function displayGameboard(phase) {
+//   if (phase === "starting") {
+//     addCells(playerBoard);
+//     display.appendChild(playerBoard);
+//   } else {
+//     addCells(playerBoard);
+//     addCells(computerBoard);
+//     display.appendChild(playerBoard);
+//     display.appendChild(computerBoard);
+//   }
+// }
 
 function markAsShip([x, y], player) {
   const cell = document.querySelector(
@@ -81,4 +94,4 @@ function renderShips(playerCoords, player) {
   });
 }
 
-export { displayGameboard, rednerGameboard, renderShips };
+export { rednerGameboard, renderShips, addCells };
