@@ -8,9 +8,13 @@ import Player from "./player";
 
 import { gameCourse } from "./gameDrive";
 import getRandomCoords from "./computer";
-import { ShipTypes } from "./ship";
+import { ShipDirection, ShipTypes } from "./ship";
 
 const messageDiv = document.querySelector(".message");
+const dirBtn = document.createElement("button");
+dirBtn.className = "dir-btn";
+dirBtn.textContent = "Rotate";
+messageDiv.appendChild(dirBtn);
 
 const display = document.querySelector(".display");
 
@@ -23,6 +27,11 @@ computerBoard.className = "board-computer";
 const player = new Player("player");
 const computer = new Player("computer");
 const shipTypes = new ShipTypes();
+const shipDir = new ShipDirection();
+
+dirBtn.addEventListener("click", function (e) {
+  shipDir.changeDirection();
+});
 
 function startGame() {
   addCells(playerBoard, "playerBoard");
@@ -32,7 +41,7 @@ function startGame() {
 
   for (const cell of playerCells) {
     cell.addEventListener("click", function (e) {
-      placeShip(e.currentTarget, "ver", shipTypes.getType());
+      placeShip(e.currentTarget, shipDir.getDirection(), shipTypes.getType());
     });
   }
 }

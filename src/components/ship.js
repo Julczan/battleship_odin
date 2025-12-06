@@ -71,4 +71,22 @@ class ShipTypes {
   }
 }
 
-export { Ship, ShipTypes };
+class ShipDirection {
+  constructor() {
+    this.direction = "hor";
+  }
+
+  getDirection() {
+    return this.direction;
+  }
+
+  changeDirection() {
+    if (this.direction === "hor") {
+      this.direction = "ver";
+    } else {
+      this.direction = "hor";
+    }
+  }
+}
+
+export { Ship, ShipTypes, ShipDirection };
