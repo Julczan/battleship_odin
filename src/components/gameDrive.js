@@ -1,5 +1,3 @@
-import Player from "./player";
-
 class Turns {
   constructor(player) {
     this.turn = player;

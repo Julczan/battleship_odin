@@ -1,9 +1,4 @@
-import {
-  rednerGameboard,
-  renderShips,
-  addCells,
-  placeShipsBoard,
-} from "./rednerGameboard";
+import { rednerGameboard, renderShips, addCells } from "./rednerGameboard";
 import Player from "./player";
 import { gameCourse, Turns } from "./gameDrive";
 import { getRandomCoords, getRandomNum } from "./computer";
@@ -42,34 +37,31 @@ dirBtn.addEventListener("click", function () {
   shipDir.changeDirection();
 });
 
-function startPlacement() {
-  addCells(playerBoard, "playerBoard");
-  display.appendChild(playerBoard);
+addCells(playerBoard, "playerBoard");
+display.appendChild(playerBoard);
 
-  const playerCells = playerBoard.childNodes;
+const playerCells = playerBoard.childNodes;
+const computerCells = computerBoard.childNodes;
 
+for (const cell of playerCells) {
+  cell.addEventListener("click", placeShipPlayer);
+}
+
+function stopPlacement() {
   for (const cell of playerCells) {
-    cell.addEventListener("click", function (e) {
-      placeShipPlayer(
-        e.currentTarget,
-        shipDir.getDirection(),
-        shipTypes.getType()
-      );
-    });
+    cell.removeEventListener("click", placeShipPlayer);
   }
 }
 
-// const turn = game.currTurn;
-
-const computerCells = computerBoard.childNodes;
+addCells(computerBoard, "computerBoard");
+placeShipComputer();
 
 function startGame() {
-  // const playerShipsCoords = player.board.getShipsCoords();
-  // console.log(playerShipsCoords);
-  // addCells(playerBoard, "playerBoard");
-  // const computerShipsCoords = computer.board.getShipsCoords();
-  // renderShips(playerShipsCoords, "player");
-  // renderShips(computerShipsCoords, "computer");
+  stopPlacement();
+  display.textContent = "";
+  messageDiv.textContent = "";
+  display.appendChild(playerBoard);
+  display.appendChild(computerBoard);
 }
 
 function placeShipComputer() {
@@ -104,24 +96,16 @@ function placeShipComputer() {
   }
 }
 
-function test() {
-  display.textContent = "";
-  addCells(computerBoard, "computerBoard");
-  display.appendChild(computerBoard);
-  placeShipComputer();
-  const computerShipsCoords = computer.board.getShipsCoords();
-
-  renderShips(computerShipsCoords, "computer");
-}
-
-function placeShipPlayer(target, direction, name) {
+function placeShipPlayer() {
   const message = player.board.place(
-    +target.dataset.row,
-    +target.dataset.column,
-    direction,
-    name
+    +this.dataset.row,
+    +this.dataset.column,
+    shipDir.getDirection(),
+    shipTypes.getType()
   );
   if (message === "illegal position") {
+    messageDiv.textContent = "Illegal position! Choose again";
+    messageDiv.appendChild(dirBtn);
     return;
   }
 
@@ -132,6 +116,7 @@ function placeShipPlayer(target, direction, name) {
 
   if (shipTypes.getType() === "none") {
     showMessage("start");
+    return "all ships placed";
   } else {
     showMessage("placement");
   }
@@ -153,11 +138,11 @@ function showMessage(stage) {
 
 function attackPlayer() {
   const coords = getRandomCoords();
-  const message = game.player.board.receiveAttack(coords[0], coords[1]);
-  const missedAttacks = game.player.board.getMissedCoords();
-  const hitAttacks = game.player.board.getHitCoords();
-  const sunkShips = game.player.board.getSunkCoords();
-  const gameover = game.player.board.gameOver();
+  const message = player.board.receiveAttack(coords[0], coords[1]);
+  const missedAttacks = player.board.getMissedCoords();
+  const hitAttacks = player.board.getHitCoords();
+  const sunkShips = player.board.getSunkCoords();
+  const gameover = player.board.gameOver();
 
   if (gameover) {
     const winner = gameCourse("gameover", "computer");
@@ -175,14 +160,14 @@ function attackPlayer() {
 }
 
 function attackComputer() {
-  const message = game.computer.board.receiveAttack(
-    this.dataset.row,
-    this.dataset.column
+  const message = computer.board.receiveAttack(
+    +this.dataset.row,
+    +this.dataset.column
   );
-  const missedAttacks = game.computer.board.getMissedCoords();
-  const hitAttacks = game.computer.board.getHitCoords();
-  const sunkShips = game.computer.board.getSunkCoords();
-  const gameover = game.computer.board.gameOver();
+  const missedAttacks = computer.board.getMissedCoords();
+  const hitAttacks = computer.board.getHitCoords();
+  const sunkShips = computer.board.getSunkCoords();
+  const gameover = computer.board.gameOver();
 
   rednerGameboard(missedAttacks, hitAttacks, sunkShips, "computer");
 
@@ -208,8 +193,5 @@ function stopGame() {
     cell.removeEventListener("click", attackComputer);
   }
 }
-
-// startPlacement();
-test();
 
 export { attackComputer, attackPlayer };

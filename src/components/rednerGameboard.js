@@ -1,11 +1,3 @@
-// const display = document.querySelector(".display");
-
-// const playerBoard = document.createElement("div");
-// playerBoard.className = "board-player";
-
-// const computerBoard = document.createElement("div");
-// computerBoard.className = "board-computer";
-
 function addCells(board, type) {
   for (let i = 0; i < 100; i++) {
     const cell = document.createElement("div");
@@ -27,18 +19,6 @@ function addCells(board, type) {
     }
   }
 }
-
-// function displayGameboard(phase) {
-//   if (phase === "starting") {
-//     addCells(playerBoard);
-//     display.appendChild(playerBoard);
-//   } else {
-//     addCells(playerBoard);
-//     addCells(computerBoard);
-//     display.appendChild(playerBoard);
-//     display.appendChild(computerBoard);
-//   }
-// }
 
 function markAsShip([x, y], player) {
   const cell = document.querySelector(
