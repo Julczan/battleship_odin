@@ -14,6 +14,11 @@ const messageDiv = document.querySelector(".message");
 const dirBtn = document.createElement("button");
 dirBtn.className = "dir-btn";
 dirBtn.textContent = "Rotate";
+
+const startBtn = document.createElement("button");
+startBtn.classList = "dir-btn";
+startBtn.textContent = "Start Game";
+
 messageDiv.appendChild(dirBtn);
 
 const display = document.querySelector(".display");
@@ -29,7 +34,10 @@ const computer = new Player("computer");
 const shipTypes = new ShipTypes();
 const shipDir = new ShipDirection();
 
-dirBtn.addEventListener("click", function (e) {
+messageDiv.textContent = `Place your ${shipTypes.getType()}`;
+messageDiv.appendChild(dirBtn);
+
+dirBtn.addEventListener("click", function () {
   shipDir.changeDirection();
 });
 
@@ -71,6 +79,23 @@ function placeShip(target, direction, name) {
 
   renderShips(playerShipsCoords, "player");
   shipTypes.nextType();
+
+  if (shipTypes.getType() === "none") {
+    showMessage("start");
+  } else {
+    showMessage("placement");
+  }
+}
+
+function showMessage(stage) {
+  if (stage === "placement") {
+    messageDiv.textContent = `Place your ${shipTypes.getType()}`;
+    messageDiv.appendChild(dirBtn);
+  }
+  if (stage === "start") {
+    messageDiv.textContent = "Start the game";
+    messageDiv.appendChild(startBtn);
+  }
 }
 
 function attackPlayer() {
