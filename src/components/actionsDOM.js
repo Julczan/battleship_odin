@@ -5,9 +5,8 @@ import {
   placeShipsBoard,
 } from "./rednerGameboard";
 import Player from "./player";
-
-import { gameCourse } from "./gameDrive";
-import getRandomCoords from "./computer";
+import { gameCourse, Turns } from "./gameDrive";
+import { getRandomCoords, getRandomNum } from "./computer";
 import { ShipDirection, ShipTypes } from "./ship";
 
 const messageDiv = document.querySelector(".message");
@@ -32,7 +31,9 @@ computerBoard.className = "board-computer";
 const player = new Player("player");
 const computer = new Player("computer");
 const shipTypes = new ShipTypes();
+const computerTypes = new ShipTypes();
 const shipDir = new ShipDirection();
+const turn = new Turns();
 
 messageDiv.textContent = `Place your ${shipTypes.getType()}`;
 messageDiv.appendChild(dirBtn);
@@ -41,7 +42,7 @@ dirBtn.addEventListener("click", function () {
   shipDir.changeDirection();
 });
 
-function startGame() {
+function startPlacement() {
   addCells(playerBoard, "playerBoard");
   display.appendChild(playerBoard);
 
@@ -49,28 +50,77 @@ function startGame() {
 
   for (const cell of playerCells) {
     cell.addEventListener("click", function (e) {
-      placeShip(e.currentTarget, shipDir.getDirection(), shipTypes.getType());
+      placeShipPlayer(
+        e.currentTarget,
+        shipDir.getDirection(),
+        shipTypes.getType()
+      );
     });
   }
 }
 
-// const playerShipsCoords = game.player.board.getShipsCoords();
-// const computerShipsCoords = game.computer.board.getShipsCoords();
 // const turn = game.currTurn;
 
 const computerCells = computerBoard.childNodes;
 
-// renderShips(playerShipsCoords, "player");
-// renderShips(computerShipsCoords, "computer");
+function startGame() {
+  // const playerShipsCoords = player.board.getShipsCoords();
+  // console.log(playerShipsCoords);
+  // addCells(playerBoard, "playerBoard");
+  // const computerShipsCoords = computer.board.getShipsCoords();
+  // renderShips(playerShipsCoords, "player");
+  // renderShips(computerShipsCoords, "computer");
+}
 
-function placeShip(target, direction, name) {
+function placeShipComputer() {
+  if (computerTypes.getType() === "none") {
+    return;
+  }
+
+  const coords = getRandomCoords();
+  const num = getRandomNum();
+
+  let direction = "";
+
+  if (num === 0) {
+    direction = "hor";
+  }
+  if (num === 1) {
+    direction = "ver";
+  }
+
+  const message = computer.board.place(
+    coords[0],
+    coords[1],
+    direction,
+    computerTypes.getType()
+  );
+
+  if (message === "illegal position") {
+    placeShipComputer();
+  } else {
+    computerTypes.nextType();
+    placeShipComputer();
+  }
+}
+
+function test() {
+  display.textContent = "";
+  addCells(computerBoard, "computerBoard");
+  display.appendChild(computerBoard);
+  placeShipComputer();
+  const computerShipsCoords = computer.board.getShipsCoords();
+
+  renderShips(computerShipsCoords, "computer");
+}
+
+function placeShipPlayer(target, direction, name) {
   const message = player.board.place(
     +target.dataset.row,
     +target.dataset.column,
     direction,
     name
   );
-  console.log(message);
   if (message === "illegal position") {
     return;
   }
@@ -95,6 +145,9 @@ function showMessage(stage) {
   if (stage === "start") {
     messageDiv.textContent = "Start the game";
     messageDiv.appendChild(startBtn);
+    startBtn.addEventListener("click", () => {
+      startGame();
+    });
   }
 }
 
@@ -156,6 +209,7 @@ function stopGame() {
   }
 }
 
-startGame();
+// startPlacement();
+test();
 
 export { attackComputer, attackPlayer };

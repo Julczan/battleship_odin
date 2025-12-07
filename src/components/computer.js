@@ -11,4 +11,9 @@ function getRandomCoords() {
   return [firstCoord, secondCoord];
 }
 
-export default getRandomCoords;
+function getRandomNum() {
+  const num = getRandomInt(0, 2);
+  return num;
+}
+
+export { getRandomCoords, getRandomNum };

@@ -14,16 +14,6 @@ class Turns {
   }
 }
 
-function placeShips() {
-  //Create game phases - first one - placing ships
-  //create a separate screen that lets user place ships
-  //user has to place one ship of each type
-  //add rotate button to place horizontally or vertically
-  //if all ships are on the board Start Game button appears
-  //change the screen to contain two boards when the button is clicked
-  //the game begins
-}
-
 function gameCourse(message, player, turn) {
   if (message === "gameover") {
     if (player === "player") {
@@ -48,4 +38,4 @@ function displayWinner(player) {
   return message;
 }
 
-export { gameCourse };
+export { gameCourse, Turns };
